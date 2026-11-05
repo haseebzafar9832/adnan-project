@@ -5,7 +5,8 @@
     <div class="group-layout">
         <section>
             <div class="panel mb-3">
-                <div class="deal-top">
+                @include('partials.product-art', ['product' => $group->product])
+                <div class="deal-top mt-3">
                     <x-status :status="$group->status" :label="$group->statusLabel()" />
                     <span class="muted">Closes {{ $group->deadline->format('d M Y, h:i A') }}</span>
                 </div>

@@ -59,9 +59,7 @@ class ProductController extends Controller
         $image = $this->storeImage($request);
 
         if ($image) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
+            $this->deleteStoredImage($product->image);
             $data['image'] = $image;
         }
 
@@ -78,9 +76,7 @@ class ProductController extends Controller
             return back()->with('success', 'This product is used by groups, so it was hidden instead of deleted.');
         }
 
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
+        $this->deleteStoredImage($product->image);
 
         $product->delete();
 
@@ -113,5 +109,12 @@ class ProductController extends Controller
         }
 
         return $request->file('image')->store('products', 'public');
+    }
+
+    private function deleteStoredImage(?string $path): void
+    {
+        if ($path && ! str_starts_with($path, 'images/')) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

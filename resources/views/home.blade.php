@@ -19,7 +19,8 @@
         </div>
         @if($featured)
             <article class="feature-card">
-                <div class="feature-kicker">
+                @include('partials.product-art', ['product' => $featured->product])
+                <div class="feature-kicker mt-3">
                     <span>Live group</span>
                     <span>{{ $featured->deadline->diffForHumans() }}</span>
                 </div>
@@ -39,20 +40,50 @@
         @endif
     </section>
 
+    <section class="bulk-banner" style="background-image: url('{{ asset('images/banner/bulk-buying.jpg') }}')">
+        <div class="bulk-banner-copy">
+            <p class="eyebrow">Bulk buying</p>
+            <h2>One large order. A lower price for every share.</h2>
+            <p>Join a pool for rice, oil, electronics, or stationery. The unit price drops as the quantity climbs, and you pay only for what you take.</p>
+            <a class="btn btn-gold" href="{{ route('products.index') }}">Browse the catalogue</a>
+        </div>
+    </section>
+
     <section class="section">
         <div class="section-head">
             <div>
-                <p class="eyebrow">Catalogue</p>
+                <p class="eyebrow">Categories</p>
                 <h2>Shop by what you already buy</h2>
             </div>
         </div>
         <div class="category-grid">
             @foreach($categories as $category)
                 <a class="cat-tile" href="{{ route('products.index', ['category' => $category->slug]) }}">
-                    <i class="bi bi-{{ $category->icon }}"></i>
-                    <strong>{{ $category->name }}</strong>
-                    <span>{{ $category->products_count }} products</span>
+                    @if($category->imageUrl())
+                        <img class="cat-photo" src="{{ $category->imageUrl() }}" alt="{{ $category->name }}">
+                    @else
+                        <i class="bi bi-{{ $category->icon }}"></i>
+                    @endif
+                    <span class="cat-copy">
+                        <strong>{{ $category->name }}</strong>
+                        <span>{{ $category->products_count }} products</span>
+                    </span>
                 </a>
+            @endforeach
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow">Catalogue</p>
+                <h2>Products ready to pool</h2>
+            </div>
+            <a href="{{ route('products.index') }}">View all products</a>
+        </div>
+        <div class="card-grid">
+            @foreach($products as $product)
+                @include('products._card', ['product' => $product])
             @endforeach
         </div>
     </section>
@@ -63,7 +94,7 @@
                 <p class="eyebrow">Open now</p>
                 <h2>Groups collecting quantity</h2>
             </div>
-            <a href="{{ route('groups.index') }}">All groups</a>
+            <a href="{{ route('groups.index') }}">View all groups</a>
         </div>
         <div class="card-grid">
             @forelse($groups as $group)

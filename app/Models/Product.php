@@ -52,4 +52,17 @@ class Product extends Model
     {
         return 'slug';
     }
+
+    public function imageUrl(): ?string
+    {
+        if (! $this->image) {
+            return null;
+        }
+
+        if (str_starts_with($this->image, 'images/')) {
+            return asset($this->image);
+        }
+
+        return asset('storage/'.$this->image);
+    }
 }

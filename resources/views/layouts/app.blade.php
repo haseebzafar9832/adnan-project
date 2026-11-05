@@ -1,9 +1,15 @@
 @extends('layouts.base')
-@php($onSite = ! auth()->check() || request()->routeIs('home', 'products.*', 'groups.index', 'groups.show'))
-@section('body-class', $onSite ? 'site-body' : 'admin-body')
+@php($onAuth = request()->routeIs('login', 'register'))
+@php($onSite = ! $onAuth && (! auth()->check() || request()->routeIs('home', 'products.*', 'groups.index', 'groups.show')))
+@section('body-class', $onAuth ? 'auth-body' : ($onSite ? 'site-body' : 'admin-body'))
 
 @section('body')
-    @if (! $onSite)
+    @if ($onAuth)
+        <main class="auth-screen">
+            @include('partials.flash')
+            @yield('content')
+        </main>
+    @elseif (! $onSite)
         <div class="admin-shell">
             <aside class="admin-side d-none d-lg-block">
                 @include('partials.desk-nav')

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\DiscountTier;
 use App\Models\GroupMember;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,7 @@ class HomeController extends Controller
             ->get();
 
         $featured = $groups->sortByDesc(fn (BulkGroup $group) => $group->progressPercent())->first();
+        $products = Product::query()->active()->with('category')->orderBy('name')->take(6)->get();
         $tiers = DiscountTier::query()->whereNull('product_id')->orderBy('min_quantity')->get();
 
         $stats = [
@@ -32,7 +34,7 @@ class HomeController extends Controller
             'saved' => $this->savings(),
         ];
 
-        return view('home', compact('categories', 'groups', 'featured', 'tiers', 'stats'));
+        return view('home', compact('categories', 'groups', 'featured', 'products', 'tiers', 'stats'));
     }
 
     public function dashboard(Request $request)

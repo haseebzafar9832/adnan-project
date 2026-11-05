@@ -61,6 +61,7 @@ class BulkShareSeeder extends Seeder
                 'description' => $row[4],
                 'unit' => $row[5],
                 'base_price' => $row[6],
+                'image' => 'images/products/'.$row[2].'.jpg',
                 'is_active' => true,
             ]);
         }

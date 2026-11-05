@@ -46,8 +46,8 @@
         <div class="field">
             <label for="image">Photo</label>
             <input id="image" name="image" type="file" accept="image/*" class="form-control">
-            @if($product->image)
-                <img class="mt-2 cover" style="height: 120px; width: 180px" src="{{ asset('storage/'.$product->image) }}" alt="">
+            @if($product->imageUrl())
+                <img class="mt-2 cover" style="height: 120px; width: 180px" src="{{ $product->imageUrl() }}" alt="">
             @endif
         </div>
         <button class="btn btn-brand" type="submit">Save product</button>

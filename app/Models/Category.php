@@ -31,4 +31,11 @@ class Category extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function imageUrl(): ?string
+    {
+        $relative = 'images/categories/'.$this->slug.'.jpg';
+
+        return is_file(public_path($relative)) ? asset($relative) : null;
+    }
 }
